@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/xsd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdsx.jhsjgx.api.mapper.QlzpMapper">
+     <select id="queryJckQlzp" parameterType="hashmap" resultType="qlzp">
+		select ID,FILENAME,FILETYPE,PARENTID  
+	    from PLAN_UPLOAD T
+	    where 1=1
+	    <if test="parentid != null and parentid != ''">and t.parentid = #{parentid}</if>
+		<if test="filetype != null and filetype != ''">and t.filetype = #{filetype}</if>
+	</select>
+	<select id="queryJckQlzpNr" parameterType="hashmap" resultType="qlzp">
+		select ID,FILENAME,FILETYPE,PARENTID,FILEDATA 
+	    from PLAN_UPLOAD T
+	    where 1=1
+	    <if test="id != null and id != ''">and t.id = #{id}</if>
+	</select>
+</mapper>

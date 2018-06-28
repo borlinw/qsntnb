@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "/xsd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="application.properties">
+    </properties>
+    <settings>
+        <!-- changes from the defaults for testing -->
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="defaultExecutorType" value="REUSE"/>
+    </settings>
+
+	<typeAliases>
+
+		<!--定义 规范：alias 用全名 -->
+		<typeAlias type="com.hdsx.jhsjgx.lx.vo.Lmgz" alias="lmgz"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Gsdgz" alias="gsdgz"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Zhhfcj" alias="zhhfcj"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Wqgz" alias="wqgz"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Glafgc" alias="glafgc"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Zhfz" alias="zhfz"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Yhdzx" alias="yhdzx"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Lkpd" alias="lkpd"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Lkpdfx" alias="lkpdfx"/>
+		<typeAlias type="com.hdsx.jhsjgx.api.vo.Qlzp" alias="qlzp"/>
+	</typeAliases>
+
+</configuration>

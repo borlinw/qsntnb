@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/xsd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdsx.jhsjgx.lx.mapper.LmgzMapper">
+    <select id="queryList" resultType="lmgz" parameterType="java.lang.String">
+        SELECT * FROM LXSH_LMGZ
+        <where>
+            <if test="xzqh!=null">
+                and xzqh = #{xzqh}
+            </if>
+            <if test="ghlxbh!=null">
+                and ghlxbh = #{ghlxbh}
+            </if>
+        </where>
+        ORDER BY TBSJ
+    </select>
+</mapper>

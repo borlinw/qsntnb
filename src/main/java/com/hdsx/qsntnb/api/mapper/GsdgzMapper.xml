@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "/xsd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hdsx.jhsjgx.api.mapper.GsdgzMapper">
+     <select id="queryGsdgzList" parameterType="hashmap" resultType="gsdgz">
+	    select * from(
+	    select t.*,rownum num from(
+	    
+		select decode(t.xmmc,null,' ',t.xmmc) xmmc,decode(t.xmbm,null,' ',t.xmbm) xmbm,decode(t.xzqh,null,' ',t.xzqh) xzqh,'新建工程' jsxz,
+	    decode(WMSYS.WM_CONCAT(distinct lx.lxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.lxbm))  ylxbm,
+        decode(WMSYS.WM_CONCAT(distinct lx.ghlxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.ghlxbm))  ghlxbm,
+        decode(substr(t.xmbm,1,4),null,' ',substr(t.xmbm,1,4))  xmnf
+	    from lxsh_xj t,lxsh_lx lx,zgb_zxlwzhtx_lxsh z
+	    where t.xmbm=lx.xmid and lx.id=z.id and lx.jdbs=0
+	    <if test="xzqh != null and xzqh != ''">and t.xzqhdm2 like '%'||#{xzqh}||'%'</if>
+		<if test="lxbm != null and lxbm != ''">and lx.ghlxbm like '%'||#{lxbm}||'%' </if>
+		<if test="qdzh != null and qdzh != ''">
+		and to_number(fun_zdzxz(z.zxlwqdzh,z.zxlwzdzh,'max'))>to_number(#{qdzh})
+		</if>
+		<if test="zdzh != null and zdzh != ''">
+		and to_number(fun_zdzxz(lx.ghqdzh,lx.ghzdzh,'min'))&lt;to_number(#{zdzh})
+		</if>
+		group by t.xmmc,t.xmbm,t.xzqh
+		union all
+		
+		select decode(t.xmmc,null,' ',t.xmmc) xmmc,decode(t.xmbm,null,' ',t.xmbm) xmbm,decode(t.xzqh,null,' ',t.xzqh) xzqh,'路面改造工程' jsxz,
+	    decode(WMSYS.WM_CONCAT(distinct lx.lxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.lxbm))  ylxbm,
+        decode(WMSYS.WM_CONCAT(distinct lx.ghlxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.ghlxbm))  ghlxbm,
+        decode(substr(t.xmbm,1,4),null,' ',substr(t.xmbm,1,4))  xmnf
+	    from lxsh_lmgz t,lxsh_lx lx,zgb_zxlwzhtx_lxsh z
+	    where t.xmbm=lx.xmid and lx.id=z.id and lx.jdbs=0
+	    <if test="xzqh != null and xzqh != ''">and t.xzqhdm2 like '%'||#{xzqh}||'%'</if>
+		<if test="lxbm != null and lxbm != ''">and lx.ghlxbm like '%'||#{lxbm}||'%' </if>
+		<if test="qdzh != null and qdzh != ''">
+		and to_number(fun_zdzxz(z.zxlwqdzh,z.zxlwzdzh,'max'))>to_number(#{qdzh})
+		</if>
+		<if test="zdzh != null and zdzh != ''">
+		and to_number(fun_zdzxz(lx.ghqdzh,lx.ghzdzh,'min'))&lt;to_number(#{zdzh})
+		</if>
+		group by t.xmmc,t.xmbm,t.xzqh
+		
+		union all
+		select decode(t.xmmc,null,' ',t.xmmc) xmmc,decode(t.xmbm,null,' ',t.xmbm) xmbm,decode(t.xzqh,null,' ',t.xzqh) xzqh,'改建工程' jsxz,
+        decode(WMSYS.WM_CONCAT(distinct lx.lxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.lxbm))  ylxbm,
+        decode(WMSYS.WM_CONCAT(distinct lx.ghlxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.ghlxbm))  ghlxbm,
+        decode(substr(t.xmbm,1,4),null,' ',substr(t.xmbm,1,4))  xmnf
+        from lxsh_sjgz t,lxsh_lx lx,zgb_zxlwzhtx_lxsh z
+        where t.xmbm=lx.xmid and lx.id=z.id and lx.jdbs=0
+        <if test="xzqh != null and xzqh != ''">and t.xzqhdm2 like '%'||#{xzqh}||'%'</if>
+		<if test="lxbm != null and lxbm != ''">and lx.ghlxbm like '%'||#{lxbm}||'%' </if>
+		<if test="qdzh != null and qdzh != ''">
+		and to_number(fun_zdzxz(z.zxlwqdzh,z.zxlwzdzh,'max'))>to_number(#{qdzh})
+		</if>
+		<if test="zdzh != null and zdzh != ''">
+		and to_number(fun_zdzxz(lx.ghqdzh,lx.ghzdzh,'min'))&lt;to_number(#{zdzh})
+		</if>
+		group by t.xmmc,t.xmbm,t.xzqh
+		
+		)t order by t.xmbm desc
+		)where <![CDATA[ num <= (#{page} * #{pagesize})]]> and num>(#{page}-1)*#{pagesize}
+	</select>
+	<select id="queryZhhfcjList" parameterType="hashmap" resultType="zhhfcj">
+	    select * from(
+	    select t.*,rownum num from(
+	    
+		select decode(t.xmmc,null,' ',t.xmmc) xmmc,decode(t.xmbm,null,' ',t.xmbm) xmbm,decode(t.xzqh,null,' ',t.xzqh) xzqh,
+	    decode( WMSYS.WM_CONCAT(distinct lx.lxbm),null,' ', WMSYS.WM_CONCAT(distinct lx.lxbm)) ylxbm,
+	    decode( WMSYS.WM_CONCAT(distinct lx.ghlxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.ghlxbm))  ghlxbm,
+	    decode(substr(t.xmbm,1,4),null,' ',substr(t.xmbm,1,4))   xmnf
+	    from xmsq_sh t,lxsh_lx lx,zgb_zxlwzhtx_lxsh z
+	    where t.xmbm=lx.xmid and lx.id=z.id and lx.jdbs=0
+	    <if test="xzqh != null and xzqh != ''">and t.xzqhdm2 like '%'||#{xzqh}||'%'</if>
+		<if test="lxbm != null and lxbm != ''">and lx.ghlxbm like '%'||#{lxbm}||'%' </if>
+		<if test="qdzh != null and qdzh != ''">
+		and to_number(fun_zdzxz(z.zxlwqdzh,z.zxlwzdzh,'max'))>to_number(#{qdzh})
+		</if>
+		<if test="zdzh != null and zdzh != ''">
+		and to_number(fun_zdzxz(lx.ghqdzh,lx.ghzdzh,'min'))&lt;to_number(#{zdzh})
+		</if>
+		group by t.xmmc,t.xmbm,t.xzqh
+		
+		)t  order by t.xmnf desc
+		)where <![CDATA[ num <= (#{page} * #{pagesize})]]> and num>(#{page}-1)*#{pagesize}
+	</select>
+	<select id="queryWqgzList" parameterType="hashmap" resultType="wqgz">
+	    select * from(
+	    select t.*,rownum num from(
+	    
+		select decode(t.qlbh,null,' ',t.qlbh) qlbm,decode(t.qlmc,null,' ',t.qlmc) qlmc,decode(t.qlzxzh,null,' ',t.qlzxzh) qlzxzh,
+		decode(t.lxbm,null,' ',t.lxbm)lxbm,decode(t.lxmc,null,' ',t.lxmc)lxmc,decode(t.xzqhmc,null,' ',t.xzqhmc) xzqh,
+		decode(t.id,null,' ',t.id) xmbm,decode(t.xmnf,null,' ',t.xmnf) rksj 
+		from xmk_wqgz t
+		where 1=1
+		<if test="xzqh != null and xzqh != ''">and xzqhdm like '%'||#{xzqh}||'%'</if>
+	    <if test="lxbm != null and lxbm != ''">and lxbm like '%'||#{lxbm}||'%' </if>
+	    <if test="qdzh != null and qdzh != ''">
+	    and to_number(qlzxzh)>to_number(#{qdzh})
+	    </if>
+	    <if test="zdzh != null and zdzh != ''">
+		and to_number(qlzxzh)&lt;to_number(#{zdzh})
+		</if>
+		
+		)t  order by t.rksj desc
+		)where <![CDATA[ num <= (#{page} * #{pagesize})]]> and num>(#{page}-1)*#{pagesize}
+	</select>
+	
+	<select id="queryWqgzByQlbm" parameterType="hashmap" resultType="wqgz">
+	    
+		select decode(t.qlbh,null,' ',t.qlbh) qlbm,decode(t.qlmc,null,' ',t.qlmc) qlmc,decode(t.qlzxzh,null,' ',t.qlzxzh) qlzxzh,
+		decode(t.lxbm,null,' ',t.lxbm)lxbm,decode(t.lxmc,null,' ',t.lxmc)lxmc,decode(t.xzqhmc,null,' ',t.xzqhmc) xzqh,
+		decode(t.id,null,' ',t.id) xmbm,decode(t.xmnf,null,' ',t.xmnf) rksj 
+		from xmk_wqgz t    
+		where 1=1
+		<if test="qlbm != null and qlbm != ''">and qlbh = #{qlbm}</if>
+	    order by t.xmnf desc
+	</select>
+	<select id="queryGlafgcList" parameterType="hashmap" resultType="glafgc">
+	    select * from(
+	    select t.*,rownum num from(
+	    
+		select decode(t.id,null,' ',t.id)  xmbm,decode(t.roadcode,null,' ',t.roadcode)  lxbm,decode(t.roadname,null,' ',t.roadname)  lxmc,
+		decode(t.roadstart,null,' ',t.roadstart)  qdzh,decode(t.roadend,null,' ',t.roadend)  zdzh,
+		decode(t.dist,null,' ',t.dist)  xzqh,decode(t.jhnf,null,' ',t.jhnf)  rksj 
+		from xmk_aqsmfh t
+		where 1=1
+		<if test="xzqh != null and xzqh != ''">and distcode like '%'||#{xzqh}||'%'</if>
+	    <if test="lxbm != null and lxbm != ''">and roadcode like '%'||#{lxbm}||'%' </if>
+	    <if test="qdzh != null and qdzh != ''">
+		and to_number(fun_zdzxz(gpsqd,gpszd,'max'))>to_number(#{qdzh})
+		</if>
+		<if test="zdzh != null and zdzh != ''">
+		and to_number(fun_zdzxz(gpsqd,gpszd,'min'))&lt;to_number(#{zdzh})
+		</if>
+		
+		)t   order by t.rksj desc
+		)where <![CDATA[ num <= (#{page} * #{pagesize})]]> and num>(#{page}-1)*#{pagesize}
+	</select>
+	<select id="queryZhfzList" parameterType="hashmap" resultType="zhfz">
+	    select * from(
+	    select t.*,rownum num from(
+	    
+	    select decode(t.id,null,' ',t.id)  xmbm,decode(t.lxbm,null,' ',t.lxbm)  lxbm,decode(t.lxmc,null,' ',t.lxmc)  lxmc,
+	    decode(t.qdzh,null,' ',t.qdzh)  qdzh,decode(t.zdzh,null,' ',t.zdzh)  zdzh,decode(t.xzqhmc,null,' ',t.xzqhmc)  xzqh,
+	    decode(t.xmnf,null,' ',t.xmnf)  rksj from xmk_zhfz t
+		where 1=1
+		<if test="xzqh != null and xzqh != ''">and xzqhdm  like '%'||#{xzqh}||'%'</if>
+	    <if test="lxbm != null and lxbm != ''">and lxbm like '%'||#{lxbm}||'%' </if>
+	    <if test="qdzh != null and qdzh != ''">
+		and to_number(fun_zdzxz(qdzh,zdzh,'max'))>to_number(#{qdzh})
+		</if>
+		<if test="zdzh != null and zdzh != ''">
+		and to_number(fun_zdzxz(qdzh,zdzh,'min'))&lt;to_number(#{zdzh})
+		</if>
+		
+		)t   order by t.rksj desc
+		)where <![CDATA[ num <= (#{page} * #{pagesize})]]> and num>(#{page}-1)*#{pagesize}
+	</select>
+	<select id="queryYhdzxList" parameterType="hashmap" resultType="yhdzx">
+	    select * from(
+	    select t.*,rownum num from(
+	    
+		select decode(t.xmmc,null,' ',t.xmmc) xmmc,decode(t.xmbm,null,' ',t.xmbm) xmbm,decode(t.xzqh,null,' ',t.xzqh) xzqh,
+	    decode(WMSYS.WM_CONCAT(distinct lx.lxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.lxbm))  ylxbm,
+	    decode(WMSYS.WM_CONCAT(distinct lx.ghlxbm),null,' ',WMSYS.WM_CONCAT(distinct lx.ghlxbm))  ghlxbm,
+	    decode(substr(t.xmbm,1,4),null,' ',substr(t.xmbm,1,4))  xmnf
+	    from xmsq_yhdzx t,lxsh_lx lx,zgb_zxlwzhtx_lxsh z
+	    where t.xmbm=lx.xmid and lx.id=z.id and lx.jdbs=1
+	    <if test="xzqh != null and xzqh != ''">and t.xzqhdm2 like '%'||#{xzqh}||'%'</if>
+		<if test="lxbm != null and lxbm != ''">and lx.ghlxbm like '%'||#{lxbm}||'%' </if>
+		<if test="qdzh != null and qdzh != ''">
+		and to_number(fun_zdzxz(z.zxlwqdzh,z.zxlwzdzh,'max'))>to_number(#{qdzh})
+		</if>
+		<if test="zdzh != null and zdzh != ''">
+		and to_number(fun_zdzxz(lx.ghqdzh,lx.ghzdzh,'min'))&lt;to_number(#{zdzh})
+		</if>
+		group by t.xmmc,t.xmbm,t.xzqh
+		
+		)t   order by t.xmbm desc
+		)where <![CDATA[ num <= (#{page} * #{pagesize})]]> and num>(#{page}-1)*#{pagesize}
+	</select>
+	<select id="getgxlxbyzh" parameterType="hashmap" resultType="java.util.LinkedHashMap">
+		select * from table(fun_cfld(#{lxbm},#{qdzh},#{zdzh}))
+	</select>
+	<select id="queryDetailSql" parameterType="hashmap" resultType="hashmap">
+		select 'select '||WMSYS.WM_CONCAT( 'decode('||colname||',null,'' '',to_char('||colname||'))'  || ' ' ||colvalue)||' from '||max(tablename)||' where '||min(pk) sql1,WMSYS.WM_CONCAT(colvalue) sql2 from sjgx_targets
+		where lb='detail'
+		<if test="xmlx != null and xmlx != ''">and xmlx like '%'||#{xmlx}||'%' </if>
+		<if test="jdbs != null and jdbs != ''">and jdbs like '%'||#{jdbs}||'%' </if>
+	</select>
+	<select id="queryDetailLbSql" parameterType="hashmap" resultType="hashmap">
+		select  'select ' ||  WMSYS.WM_CONCAT( 'decode('||colname||',null,'' '',to_char('||colname||'))'  || ' ' ||colvalue) || ' from ' || max(tablename) || ' where ' || min(pk) sql1, WMSYS.WM_CONCAT(colvalue) sql2
+ 		 from sjgx_targets 
+		where 1=1 
+		<if test="xmlx != null and xmlx != ''">and xmlx like '%'||#{xmlx}||'%' </if>
+		<if test="jdbs != null and jdbs != ''">and jdbs like '%'||#{jdbs}||'%' </if>
+	</select>
+	<select id="queryDetail" parameterType="string" resultType="java.util.LinkedHashMap">
+		${value}
+	</select>
+	<select id="queryRoadSql" parameterType="hashmap" resultType="hashmap">
+		select 'select '||WMSYS.WM_CONCAT( 'decode('||colname||',null,'' '',to_char('||colname||'))'  || ' ' ||colvalue)||' from '||max(tablename)||' where JDBS='||MIN(JDBS2) ||' and  '||min(pk) sql1,
+		 WMSYS.WM_CONCAT(colvalue) sql2 from sjgx_targets
+		where lb='road' 
+		<if test="xmlx != null and xmlx != ''">and xmlx like '%'||#{xmlx}||'%' </if>
+		<if test="jdbs != null and jdbs != ''">and jdbs like '%'||#{jdbs}||'%' </if>
+	</select>
+	<select id="queryRoad" parameterType="string" resultType="java.util.LinkedHashMap">
+		${value}
+	</select>
+	<select id="queryDetailLb" parameterType="string" resultType="java.util.LinkedHashMap">
+		${value}
+	</select>
+	<select id="getProjectMenuQq" parameterType="hashmap" resultType="java.util.LinkedHashMap">
+		select cdmc from(
+			select sum(sl) sl,'项目立项' cdmc from(
+				select count(*) sl from lxsh_lmgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from lxsh_sjgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from lxsh_xj where xmbm=#{xmbm}
+				union all
+				select count(*) sl from xmsq_yhdzx where xmbm=#{xmbm}
+				union all
+				select count(*) sl from xmsq_sh where xmbm=#{xmbm}
+			)
+			union all
+			select sum(sl) sl,'工程可行性报告' cdmc from(
+				select count(*) sl from kxxyj_lmgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from kxxyj_sjgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from kxxyj_xj where xmbm=#{xmbm}
+			)
+			union all
+			select sum(sl) sl,'工程初步设计' cdmc from(
+				select count(*) sl from cbsj_lmgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from cbsj_sjgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from cbsj_xj where xmbm=#{xmbm}
+			)
+			union all
+			select sum(sl) sl,'施工图设计' cdmc from(
+				select count(*) sl from cbsj_yhdzx where xmbm=#{xmbm}
+				union all
+				select count(*) sl from cbsj_sh where xmbm=#{xmbm}
+			)
+			union all
+			select sum(sl) sl,'基础项目库' cdmc from(
+				select count(*) sl from xmk_aqsmfh where id=#{xmbm}
+				union all
+				select count(*) sl from xmk_zhfz where id=#{xmbm}
+				union all
+				select count(*) sl from xmk_wqgz where id=#{xmbm}
+			)
+			union all
+			select sum(sl) sl,'方案审查库' cdmc from(
+				select count(*) sl from sck_aqsmfh_ld where xmkid=#{xmbm}
+				union all
+				select count(*) sl from sck_zhfz where xmkid=#{xmbm}
+				union all
+				select count(*) sl from sck_wqgz where xmkid=#{xmbm}
+			)
+		)where sl>0
+	</select>
+	<select id="getProjectMenuJh" parameterType="hashmap" resultType="java.util.LinkedHashMap">
+		select cdmc from(
+			select sum(sl) sl,'计划预安排' cdmc from(
+				select count(*) sl from jhsh_lmgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from jhsh_sjgz where xmbm=#{xmbm}
+				union all
+				select count(*) sl from jhsh_xj where xmbm=#{xmbm}
+				union all
+				select count(*) sl from jhsh_yhdzx where xmbm=#{xmbm}
+				union all
+				select count(*) sl from jhsh_sh where xmbm=#{xmbm}
+				union all
+				select count(*) sl from plan_zhfz p,sck_zhfz s,xmk_zhfz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid
+				union all
+				select count(*) sl from plan_wqgz p,sck_wqgz s,xmk_wqgz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid
+				union all
+				select count(*) sl from plan_af p,sck_aqsmfh_ld sl,xmk_aqsmfh x,sck_aqsmfh s where x.id=#{xmbm} and x.id=sl.xmkid and s.id=p.sckid and sl.xmbm=s.xmbm
+			
+			)
+			union all
+			select sum(sl) sl,'计划下达' cdmc from(
+				select count(*) sl from plan_zjxd where xmbm=#{xmbm}
+				union all
+				select count(*) sl from  plan_zjxd pz,plan_zhfz p,sck_zhfz s,xmk_zhfz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and pz.xmid=p.id
+				union all
+				select count(*) sl from  plan_zjxd pz,plan_wqgz p,sck_wqgz s,xmk_wqgz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and pz.xmid=p.id
+				union all
+				select count(*) sl from  plan_zjxd pz,plan_af p,sck_aqsmfh_ld sl,xmk_aqsmfh x,sck_aqsmfh s where x.id=#{xmbm} and x.id=sl.xmkid and s.id=p.sckid and sl.xmbm=s.xmbm and pz.xmid=p.id
+			)
+		)where sl>0
+	</select>
+	<select id="getProjectMenuJd" parameterType="hashmap" resultType="java.util.LinkedHashMap">
+		select cdmc from(
+			select sum(sl) sl,'开工' cdmc from(
+				select count(*) sl from jhsh_lmgz where xmbm=#{xmbm} and sjkgsj is not null
+				union all
+				select count(*) sl from jhsh_sjgz where xmbm=#{xmbm} and sjkgsj is not null
+				union all
+				select count(*) sl from jhsh_xj where xmbm=#{xmbm} and sjkgsj is not null
+				union all
+				select count(*) sl from jhsh_yhdzx where xmbm=#{xmbm} and sjkgsj is not null
+		        union all
+		        select count(*) sl from jhsh_sh where xmbm=#{xmbm} and sjkgsj is not null
+		        union all
+				select count(*) sl from plan_zhfz p,sck_zhfz s,xmk_zhfz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and sjkgsj is not null
+				union all
+				select count(*) sl from plan_wqgz p,sck_wqgz s,xmk_wqgz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and sjkgsj is not null
+				union all
+				select count(*) sl from plan_af p,sck_aqsmfh_ld sl,xmk_aqsmfh x,sck_aqsmfh s where x.id=#{xmbm} and x.id=sl.xmkid and s.id=p.sckid and sl.xmbm=s.xmbm and sjkgsj is not null
+			
+      )
+      union all
+      select sum(sl) sl,'月报' cdmc from(
+        
+        select count(*) sl from gcgl_xmjd where xmbm=#{xmbm}
+        union all
+        select count(*) sl from gcgl_yhdzx where jhid=#{xmbm}
+        
+        union all 
+        select count(*) sl from  gcgl_zhfz pz,plan_zhfz p,sck_zhfz s,xmk_zhfz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and pz.jhid=p.id
+		union all
+		select count(*) sl from  gcgl_wqgz pz,plan_wqgz p,sck_wqgz s,xmk_wqgz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and pz.jhid=p.id
+		union all
+		select count(*) sl from  gcgl_abgc pz,plan_af p,sck_aqsmfh_ld sl,xmk_aqsmfh x,sck_aqsmfh s where x.id=#{xmbm} and x.id=sl.xmkid and s.id=p.sckid and sl.xmbm=s.xmbm and pz.jhid=p.id
+        
+      )
+      union all
+      select sum(sl) sl,'完工' cdmc from(
+        select count(*) sl from jhsh_lmgz where xmbm=#{xmbm} and sjwgsj is not null
+				union all
+				select count(*) sl from jhsh_sjgz where xmbm=#{xmbm} and sjwgsj is not null
+				union all
+				select count(*) sl from jhsh_xj where xmbm=#{xmbm} and sjwgsj is not null
+				union all
+				select count(*) sl from jhsh_yhdzx where xmbm=#{xmbm} and sjwgsj is not null
+		        union all
+		        select count(*) sl from jhsh_sh where xmbm=#{xmbm} and sjwgsj is not null
+      			union all
+				select count(*) sl from plan_zhfz p,sck_zhfz s,xmk_zhfz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and sjwgsj is not null
+				union all
+				select count(*) sl from plan_wqgz p,sck_wqgz s,xmk_wqgz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and sjwgsj is not null
+				union all
+				select count(*) sl from plan_af p,sck_aqsmfh_ld sl,xmk_aqsmfh x,sck_aqsmfh s where x.id=#{xmbm} and x.id=sl.xmkid and s.id=p.sckid and sl.xmbm=s.xmbm and sjwgsj is not null
+			
+      )
+      union all
+      select sum(sl) sl,'交竣工验收' cdmc from(
+        select count(*) sl from gcgl_jgys where jhid=#{xmbm}
+        union all
+		select count(*) sl from  gcgl_jgys pz,plan_zhfz p,sck_zhfz s,xmk_zhfz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and pz.jhid=p.id
+		union all
+		select count(*) sl from  gcgl_jgys pz,plan_wqgz p,sck_wqgz s,xmk_wqgz x where x.id=#{xmbm} and x.id=s.xmkid and s.sckid=p.sckid and pz.jhid=p.id
+		union all
+		select count(*) sl from  gcgl_jgys pz,plan_af p,sck_aqsmfh_ld sl,xmk_aqsmfh x,sck_aqsmfh s where x.id=#{xmbm} and x.id=sl.xmkid and s.id=p.sckid and sl.xmbm=s.xmbm and pz.jhid=p.id
+      
+      )
+    )where sl>0
+	</select>
+	<select id="getRoadDetails" parameterType="hashmap" resultType="lkpd">
+		select decode(lxbh,null,' ',lxbh)  lxbm,decode(qdzh,null,' ',qdzh) qdzh,decode(zdzh,null,' ',zdzh) zdzh,
+		decode(ldcd,null,' ',ldcd)  cd,decode(jcfx,null,' ',jcfx) jcfx,decode(jsdj,null,' ',jsdj) jsdj,
+		decode(lmlx,null,' ',lmlx) lmlx,decode(mqi,null,' ',mqi) mqi,decode(pqi,null,' ',pqi) pqi,
+		decode(sci,null,' ',sci) sci,decode(bci,null,' ',bci) bci,decode(tci,null,' ',tci) tci,
+		decode(pci,null,' ',pci) pci,decode(rqi,null,' ',rqi) rqi,
+		decode(rdi,null,' ',rdi) rdi,decode(sri,null,' ',sri) sri,decode(pssi,null,' ',pssi) pssi 
+		from lkpd_mxb_data_2014
+		where mxb_id =( select id from lkpd_mxb2014 where tbnf =(select max(tbnf) from lkpd_mxb2014))
+		<if test="fx != null and fx != ''">and jcfx like '%'||#{fx}||'%'</if>
+		<if test="zh != null and zh != ''">and ( (to_number(#{zh})>=to_number(qdzh) and to_number(zdzh)>=to_number(#{zh})) or  (to_number(#{zh})>=to_number(zdzh) and to_number(qdzh)>=to_number(#{zh})) )</if>
+		<if test="lxbm != null and lxbm != ''">and lxbh = #{lxbm} </if>
+	</select>
+	<select id="getStatisticsData" resultType="lkpdfx" parameterType="hashmap">
+	select t.tbnf || '路况评定' lkpdbb,
+			sum(decode(qjfx,'上下行',mqi,0)) mqisx,sum(decode(qjfx,'上行',mqi,0)) mqishx,sum(decode(qjfx,'下行',mqi,0)) mqixx,
+			sum(decode(qjfx,'上下行',pqi,0)) pqisx,sum(decode(qjfx,'上行',pqi,0)) pqishx,sum(decode(qjfx,'下行',pqi,0)) pqixx,
+			sum(decode(qjfx,'上下行',sci,0)) scisx,sum(decode(qjfx,'上行',sci,0)) scishx,sum(decode(qjfx,'下行',sci,0)) scixx,
+			sum(decode(qjfx,'上下行',bci,0)) bcisx,sum(decode(qjfx,'上行',bci,0)) bcishx,sum(decode(qjfx,'下行',bci,0)) bcixx,
+			sum(decode(qjfx,'上下行',tci,0)) tcisx,sum(decode(qjfx,'上行',tci,0)) tcishx,sum(decode(qjfx,'下行',tci,0)) tcixx
+			from lkpd_lkhzb_data d left join lkpd_lkhzb t on t.id=d.hzb_id 
+			where 1=1
+
+		<if test="lxbh != null and  lxbh != ''">
+			and d.lxbh=#{lxbh}  
+		</if>
+		<if test="tbnf != null and  tbnf != ''">
+			and substr(t.tbnf,1,4) in ( ${tbnf}  )
+		</if>
+		group by d.lxbh,t.tbnf
+		order by t.tbnf
+	</select>
+	<select id="queryJckQlzp" parameterType="hashmap" resultType="qlzp">
+		select ID,FILENAME,FILETYPE,PARENTID 
+	    from PLAN_UPLOAD T
+	    where 1=1
+	    <if test="parentid != null and parentid != ''">and t.parentid = #{parentid}</if>
+		<if test="filetype != null and filetype != ''">and t.filetype = #{filetype}</if>
+	</select>
+	<select id="queryJckQlzpNr" parameterType="hashmap" resultType="qlzp">
+		select ID,FILENAME,FILETYPE,PARENTID,FILEDATA 
+	    from PLAN_UPLOAD T
+	    where 1=1
+	    <if test="id != null and id != ''">and t.id = #{id}</if>
+	</select>
+	<select id="queryDwByUser" parameterType="hashmap" resultType="hashmap">
+		
+		select unit from xtgl_master  m  where 
+	    M.zt='启用' and M.truename=#{username} AND M.PASSWORD=#{password}
+	</select>
+</mapper>
